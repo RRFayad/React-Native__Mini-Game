@@ -2,6 +2,9 @@ import { useState } from "react";
 import { TextInput, View, Text, Alert } from "react-native";
 
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from "../components/ui/Title";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 
 function StartGameScreen({ onPickNumber: pickedNumberHandler }) {
   const [enteredNumber, setEnteredNumber] = useState("");
@@ -26,30 +29,30 @@ function StartGameScreen({ onPickNumber: pickedNumberHandler }) {
       ]);
       return;
     }
-    pickedNumberHandler(enteredNumber);
+    pickedNumberHandler(chosenNumber);
   };
 
   return (
-    // inputContainer
-    <View
-      className="bg-primary-800  mx-[24px] mt-[100px] rounded-lg p-4 shadow-sm shadow-black"
-      style={{ elevation: 80 }} // Used for the shadow in Android
-    >
-      <TextInput
-        className="border-accent-500 text-accent-500 mx-auto my-2 h-[50px] w-[50px] border-b-2 text-center text-3xl font-bold"
-        maxLength={2}
-        keyboardType="number-pad"
-        onChangeText={numberInputHandler}
-        value={enteredNumber}
-      />
-      <View className="mt-4 flex-row justify-around align-middle">
-        <View className="flex-1">
-          <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+    <View className="mt-[64px] flex-1 ">
+      <Title ViewClassName={"mx-8"}>Guess My Number</Title>
+      <Card>
+        <InstructionText>Enter a Number</InstructionText>
+        <TextInput
+          className="mx-auto my-2 h-[50px] w-[50px] border-b-2 border-accent-500 text-center text-3xl font-bold text-accent-500"
+          maxLength={2}
+          keyboardType="number-pad"
+          onChangeText={numberInputHandler}
+          value={enteredNumber}
+        />
+        <View className="mt-4 flex-row justify-around align-middle">
+          <View className="flex-1">
+            <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+          </View>
+          <View className="flex-1">
+            <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+          </View>
         </View>
-        <View className="flex-1">
-          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-        </View>
-      </View>
+      </Card>
     </View>
   );
 }

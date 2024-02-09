@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, Alert } from "react-native";
 
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 
 const generateNumberBetween = (min, max, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -18,9 +20,16 @@ const generateNumberBetween = (min, max, exclude) => {
 let minBoundary = 1; // As these are outside the component, these will not re-render
 let maxBoundary = 100;
 
-function GameScreen({ userNumber }) {
+function GameScreen({ userNumber, onGameOver: gameOverHandler }) {
   const initialGuess = generateNumberBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  useEffect(() => {
+    if (currentGuess === userNumber) {
+      console.log("aa");
+      gameOverHandler();
+    }
+  }, [currentGuess, userNumber]);
 
   const nextGuessHandler = (direction) => {
     if (
@@ -48,8 +57,8 @@ function GameScreen({ userNumber }) {
     <View className="flex-1 p-[24px]">
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>Higher or lower?</Text>
+      <Card>
+        <InstructionText>Higher or Lower?</InstructionText>
         <View className="">
           <PrimaryButton onPress={() => nextGuessHandler("lower")}>
             -
@@ -58,7 +67,7 @@ function GameScreen({ userNumber }) {
             +
           </PrimaryButton>
         </View>
-      </View>
+      </Card>
       {/* <Text>LOG ROUNDS</Text> */}
     </View>
   );
