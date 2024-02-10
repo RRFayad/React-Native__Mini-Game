@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, Text, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
@@ -58,14 +59,20 @@ function GameScreen({ userNumber, onGameOver: gameOverHandler }) {
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText>Higher or Lower?</InstructionText>
-        <View className="">
-          <PrimaryButton onPress={() => nextGuessHandler("lower")}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={() => nextGuessHandler("greater")}>
-            +
-          </PrimaryButton>
+        <InstructionText textClassName={"mb-[12]"}>
+          Higher or Lower?
+        </InstructionText>
+        <View className="flex-row justify-center">
+          <View className="flex-1">
+            <PrimaryButton onPress={() => nextGuessHandler("lower")}>
+              <Ionicons name="remove-outline" size={24} color={"white"} />
+            </PrimaryButton>
+          </View>
+          <View className="flex-1">
+            <PrimaryButton onPress={() => nextGuessHandler("greater")}>
+              <Ionicons name="add-outline" size={24} color="white" />
+            </PrimaryButton>
+          </View>
         </View>
       </Card>
       {/* <Text>LOG ROUNDS</Text> */}
