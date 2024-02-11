@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, Alert, FlatList } from "react-native";
+import { View, Text, Alert, FlatList, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../components/ui/Title";
@@ -30,6 +30,8 @@ function GameScreen({
   const initialGuess = generateNumberBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessesList, setGuessesList] = useState([initialGuess]);
+
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess === userNumber) {
@@ -66,9 +68,8 @@ function GameScreen({
     setCurrentGuess(newRndNumber);
   };
 
-  return (
-    <View className="flex-1 p-[24px]">
-      <Title>Opponent's Guess</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText textClassName={"mb-[12]"}>
@@ -87,6 +88,36 @@ function GameScreen({
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  if (width > 500) {
+    content = (
+      <>
+        <InstructionText textClassName={"mb-[12]"}>
+          Higher or Lower?
+        </InstructionText>
+        <View className="flex-row items-center">
+          <View className="flex-1">
+            <PrimaryButton onPress={() => nextGuessHandler("lower")}>
+              <Ionicons name="remove-outline" size={24} color={"white"} />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View className="flex-1">
+            <PrimaryButton onPress={() => nextGuessHandler("greater")}>
+              <Ionicons name="add-outline" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <View className="flex-1 p-[24px]">
+      <Title>Opponent's Guess</Title>
+      {content}
       <FlatList
         data={guessesList}
         renderItem={(itemData) => {

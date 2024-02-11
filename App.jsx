@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ImageBackground, SafeAreaView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
 
 import StartGameScreen from "./src/screens/StartGameScreen";
 import GameScreen from "./src/screens/GameScreen";
@@ -19,6 +19,16 @@ export default function App() {
     "open-sans-bold": require("./assets/fonts/OpenSans-bold.ttf"),
   });
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsIsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsIsLoaded]);
+
+  if (!fontsIsLoaded) {
+    return null;
+  }
+
   const pickedNumberHandler = (pickedNumber) => {
     setUserNumber(pickedNumber);
   };
@@ -31,11 +41,14 @@ export default function App() {
 
   return (
     <>
-      {!fontsIsLoaded && <AppLoading />}
       {fontsIsLoaded && (
         <>
           <StatusBar style="light" />
-          <LinearGradient colors={["#4e0329", "#ddb52f"]} className="flex-1 ">
+          <LinearGradient
+            colors={["#4e0329", "#ddb52f"]}
+            className="flex-1"
+            onLayout={onLayoutRootView}
+          >
             <ImageBackground
               source={require("./assets/images/background.png")}
               resizeMode="cover"

@@ -1,7 +1,9 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 
 import Title from "../components/ui/Title";
 import PrimaryButton from "../components/ui/PrimaryButton";
+
+const width = Dimensions.get("screen").width;
 
 function GameOverScreen({
   roundsNumber,
@@ -11,7 +13,9 @@ function GameOverScreen({
   return (
     <View className="flex-1 items-center justify-center p-3 capitalize">
       <Title ViewClassName={"mx-8"}>GAME OVER !</Title>
-      <View className="mx-auto mt-9 h-[300px] w-[300px] overflow-hidden rounded-full border-2 border-primary-800">
+      <View
+        className={`mx-auto mt-9 ${width > 380 ? "h-[70vw] w-[70vw]" : "h-[50vw] w-[50vw]"} overflow-hidden rounded-full border-2 border-primary-800`}
+      >
         <Image
           source={require("../../assets/images/success.png")}
           className="h-[100%] w-[100%]"
