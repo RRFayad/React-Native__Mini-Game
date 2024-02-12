@@ -91,7 +91,7 @@ function GameScreen({
     </>
   );
 
-  if (width > 500) {
+  if (width > height) {
     content = (
       <>
         <InstructionText textClassName={"mb-[12]"}>
